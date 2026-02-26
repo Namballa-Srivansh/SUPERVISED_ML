@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score, precision_score
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import StandardScaler
 
-heart_df = pd.read_csv("C:\\Users\\sriva\\Desktop\\ML\\Logistic Regression\\heart.csv")
+heart_df = pd.read_csv("CSV Files\heart.csv")
 # print(heart_df.head())
 # # print(heart_df.columns)
 # # print(heart_df.info())

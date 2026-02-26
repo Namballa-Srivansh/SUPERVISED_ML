@@ -7,7 +7,7 @@ from sklearn.linear_model import Lasso
 from sklearn.linear_model import LassoCV
 from sklearn.metrics import r2_score
 
-insuarance_data = pd.read_csv("insurance.csv")
+insuarance_data = pd.read_csv("CSV Files\insurance.csv")
 
 X = insuarance_data.drop(columns = ["charges"])
 y = insuarance_data["charges"]

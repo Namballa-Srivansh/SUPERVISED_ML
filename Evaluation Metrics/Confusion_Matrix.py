@@ -7,7 +7,7 @@ from sklearn.metrics import r2_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix
 
-heart_df = pd.read_csv("C:\\Users\\sriva\\Desktop\\ML\\Logistic Regression\\heart.csv")
+heart_df = pd.read_csv("CSV Files\heart.csv")
 
 X = heart_df.drop(columns=["target"])
 y = heart_df["target"]
