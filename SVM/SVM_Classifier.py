@@ -1,30 +1,69 @@
-from sklearn.svm import SVR
+from sklearn.svm import SVC 
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import r2_score
+from sklearn.metrics import r2_score, accuracy_score, classification_report, f1_score
 from sklearn import datasets
 
-df = datasets.load_diabetes(as_frame=True).frame
+df = datasets.load_iris(as_frame=True).frame
 
 X = df.drop("target", axis=1)
 y = df["target"]
 
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.3, random_state=42
+    X, y, test_size=0.3, random_state=42, stratify=y
 )
 
-y_scaler = StandardScaler()
+scaler = StandardScaler()
 
-y_train_scaled = y_scaler.fit_transform(y_train.values.reshape(-1, 1)).ravel()
-y_test_scaled = y_scaler.transform(y_test.values.reshape(-1, 1)).ravel()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
 
-model = SVR()
+# model = SVC()
 
-model.fit(X_train, y_train_scaled)
+# model.fit(X_train_scaled, y_train)
 
-y_test_pred_scaled = model.predict(X_test)
-y_train_pred_scaled = model.predict(X_train)
+# y_pred = model.predict(X_test_scaled)
 
-print("train r2: ", r2_score(y_train_scaled, y_train_pred_scaled))
-print("test r2: ", r2_score(y_test_scaled, y_test_pred_scaled))
+# print("Accuracy: ", accuracy_score(y_test, y_pred))
+# print("Classification Report: \n", classification_report(y_test, y_pred))
+
+# ------------------------Linear kernel------------------------------------------
+
+# svc = SVC(kernel="linear")
+# svc.fit(X_train_scaled, y_train)
+
+# y_pred = svc.predict(X_test_scaled)
+
+# print("Accuracy: ", accuracy_score(y_test, y_pred))
+# print("Classification Report: \n", classification_report(y_test, y_pred))
+
+# -------------------------Polynomial Kernel---------------------------------------
+
+# svc = SVC(kernel="poly")
+# svc.fit(X_train_scaled, y_train)
+
+# y_pred = svc.predict(X_test_scaled)
+
+# print("Accuracy: ", accuracy_score(y_test, y_pred))
+# print("Classification Report: \n", classification_report(y_test, y_pred))
+
+# --------------------------Sigmoid kernel------------------------------------------
+
+# svc = SVC(kernel="sigmoid")
+# svc.fit(X_train_scaled, y_train)
+
+# y_pred = svc.predict(X_test_scaled)
+
+# print("Accuracy: ", accuracy_score(y_test, y_pred))
+# print("Classification Report: \n", classification_report(y_test, y_pred))
+
+C_vals = [0.5, 1, 2, 3, 4, 5]
+
+for c_val in C_vals:
+    svc = SVC(C = c_val, kernel="rbf")
+    svc.fit(X_train_scaled, y_train)
+
+    y_pred = svc.predict(X_test_scaled)
+
+    print("C = ", c_val, "& accuracy: ", accuracy_score(y_test, y_pred))
