@@ -1,4 +1,4 @@
-from sklearn.svm import SVR
+from sklearn.svm import SVR, LinearSVR
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler
@@ -31,24 +31,35 @@ y_test_scaled = y_scaler.transform(y_test.values.reshape(-1, 1)).ravel()
 
 # -----------------------------------------Hyperparameter tuning using GridSearchCV---------------------------------------------
 
-param_grid = {
-    "C": [1, 2, 5, 10, 50, 100],
-    "kernel": ["rbf", "linear"],
-    "epsilon": [0.001, 0.1, 0.2, 0.3, 0.5],
-}
+# param_grid = {
+#     "C": [1, 2, 5, 10, 50, 100],
+#     "kernel": ["rbf", "linear"],
+#     "epsilon": [0.001, 0.1, 0.2, 0.3, 0.5],
+# }
 
-svr = SVR()
+# svr = SVR()
 
-grid_search = GridSearchCV(svr, param_grid, scoring="r2", cv=5)
+# grid_search = GridSearchCV(svr, param_grid, scoring="r2", cv=5)
 
-grid_search.fit(X_train, y_train_scaled)
-print("best params - ", grid_search.best_params_)
+# grid_search.fit(X_train, y_train_scaled)
+# print("best params - ", grid_search.best_params_)
 
-best_model = grid_search.best_estimator_
+# best_model = grid_search.best_estimator_
 
 
-y_test_pred_scaled = best_model.predict(X_test)
-y_train_pred_scaled = best_model.predict(X_train)
+# y_test_pred_scaled = best_model.predict(X_test)
+# y_train_pred_scaled = best_model.predict(X_train)
+
+# print("train r2: ", r2_score(y_train_scaled, y_train_pred_scaled))
+# print("test r2: ", r2_score(y_test_scaled, y_test_pred_scaled))
+
+# ---------------------------------------------Linear SVR--------------------------------------------------------------------
+
+model = LinearSVR(C=10, epsilon=0.1, max_iter=5000)
+model.fit(X_train, y_train_scaled)
+
+y_test_pred_scaled = model.predict(X_test)
+y_train_pred_scaled = model.predict(X_train)
 
 print("train r2: ", r2_score(y_train_scaled, y_train_pred_scaled))
 print("test r2: ", r2_score(y_test_scaled, y_test_pred_scaled))
